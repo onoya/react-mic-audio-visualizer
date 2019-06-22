@@ -31,3 +31,10 @@
     transform: rotate(360deg);
   }
 }
+
+.App-btn {
+  cursor: pointer;
+  padding: 1em 2em;
+  background-color: #fff;
+  border: none;
+}
