@@ -1,33 +1,12 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import './App.css';
-import AudioAnalyser from './AudioAnalyser';
+import AudioVisualiser from './AudioVisualizer';
+import { useMediaStream } from './contexts/MediaStreamContext';
 
 const App: FunctionComponent = () => {
-  const [stream, setStream] = useState<null | MediaStream>(null);
+  const { stream, start, stop } = useMediaStream();
 
-  const openMic = async () => {
-    const mediaStream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: false,
-    });
-
-    setStream(mediaStream);
-  };
-
-  const closeMic = () => {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-      setStream(null);
-    }
-  };
-
-  const toggleMic = () => {
-    if (stream) {
-      closeMic();
-    } else {
-      openMic();
-    }
-  };
+  const toggleMic = () => stream ? stop() : start();
 
   return (
     <div className="App">
@@ -35,7 +14,7 @@ const App: FunctionComponent = () => {
         <button className="App-btn" onClick={toggleMic}>
           {stream ? 'Close Microphone' : 'Open Microphone'}
         </button>
-        {stream && <AudioAnalyser stream={stream} />}
+        <AudioVisualiser />
       </header>
     </div>
   );
